@@ -86,8 +86,7 @@ export default {
   name: "SearchView",
   data() {
     return {
-      // search_value: this.$store.state.search_prod,
-      // list_prod: [],
+
     };
   },
   created() {
@@ -98,22 +97,12 @@ export default {
           id: doc.id,
           ...doc.data(),
         }));
-        // this.list_prod = documents;
         this.$store.commit("setListProd", documents);
       });
   },
   computed: {
     filterProd: function () {
       return this.$store.getters.hasilPencarian;
-      // return this.list_prod.filter((item) => {
-      //     this.$store.commit("setProgressValue", 100)
-      //     if((item.nama_produk).toLowerCase().match(this.search_value.toLowerCase())){
-      //         return (item.nama_produk).toLowerCase().match(this.search_value.toLowerCase())
-      //     }
-      //     if((item.kategori_produk).toLowerCase().match(this.search_value.toLowerCase())){
-      //         return (item.kategori_produk).toLowerCase().match(this.search_value.toLowerCase())
-      //     }
-      // })
     },
   },
   methods: {

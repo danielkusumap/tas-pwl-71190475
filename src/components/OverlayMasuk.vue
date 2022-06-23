@@ -108,9 +108,6 @@ export default {
         .get()
         .then((snapshot) => {
           const documents = snapshot.data();
-          // this.cart = documents;
-          // this.$store.commit("setCart", documents);
-          // console.log(documents, "AAAA");
           if (typeof documents == "undefined") {
             db.collection("cart").doc(this.email).set({ isi_cart: {} });
           }
@@ -120,9 +117,7 @@ export default {
             .then((snapshot) => {
               const documents = snapshot.data();
               this.$store.commit("setCart", documents);
-              // this.show = true;
               this.close_masuk();
-              // this.$store.state.cart.isi_cart["test"]+=1
             });
         });
       

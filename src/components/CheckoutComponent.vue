@@ -1,10 +1,5 @@
 <template>
   <div class="mb-10">
-    <!-- <v-list-item v-for="item in cekCartItem()" :key="item.id">
-      <v-list-item-title>
-        {{ item[1].nama_produk }} {{ item[1].jumlah }}
-      </v-list-item-title>
-    </v-list-item> -->
     <v-text-field
       placeholder="nama penerima"
       label="nama penerima"
@@ -25,9 +20,6 @@
       <v-row v-for="item in cekCartItem()" :key="item.id">
         <v-col xs="12" sm="4" md="4" lg="4">
           <v-img width="200" height="150" :src="item[1].foto_produk" class="mb-5"></v-img>
-          <!-- <v-list-item-avatar class="mb-5" width="200" height="150" tile>
-            <v-img :src="item[1].foto_produk"></v-img>
-          </v-list-item-avatar> -->
         </v-col>
 
         <v-col xs="12" sm="4" md="4" lg="4">
@@ -70,38 +62,6 @@
           </v-list-item-content>
         </v-col>
       </v-row>
-      <!-- <v-list-item
-        v-for="item in cekCartItem()"
-        :key="item.id"
-        class="ml-10 pt-5"
-      >
-        <v-list-item-avatar class="mb-5" width="200" height="150" tile>
-          <v-img :src="item[1].foto_produk"></v-img>
-        </v-list-item-avatar>
-        <v-list-item-content>
-          <v-list-item-title class="text-caption text-sm-body-2 text-md-body-1 text-lg-h6">
-            {{ item[1].nama_produk }}
-          </v-list-item-title>
-          <v-list-item-title class="text-caption text-sm-body-2 text-md-body-1 text-lg-h6">
-            {{ item[1].jumlah }} x Rp{{ (item[1].harga_produk).toLocaleString("id-ID") }}
-          </v-list-item-title>
-          <v-list-item-title class="text-caption text-sm-body-2 text-md-body-1 text-lg-h6">
-            subtotal: Rp{{ (item[1].jumlah * item[1].harga_produk).toLocaleString("id-ID") }}
-          </v-list-item-title>
-        </v-list-item-content>
-
-        <v-list-item-content>
-          <v-list-item-icon class="text-caption text-sm-body-2 text-md-body-1 text-lg-h6">
-            <v-btn icon @click="decreaseItem(item[1])">
-              <v-icon>mdi-minus</v-icon>
-            </v-btn>
-            <p class="">{{ item[1].jumlah }}</p>
-            <v-btn icon @click="newItem(item[1])">
-              <v-icon>mdi-plus</v-icon>
-            </v-btn>
-          </v-list-item-icon>
-        </v-list-item-content>
-      </v-list-item> -->
       <v-text-field
         placeholder="voucher"
         label="voucher"
@@ -176,15 +136,6 @@ export default {
         alamat: this.alamat,
         tanggal_transaksi: firebase.firestore.Timestamp.now()
       })
-      // db.collection("data_transaksi")
-      // .get()
-      // .then((querySnapshot) => {
-      //   const documents = querySnapshot.docs.map((doc) => ({
-      //     id: doc.id,
-      //     ...doc.data(),
-      //   }));
-      //   this.$store.commit("setListTransaksi", documents)
-      // });
      db.collection('cart').doc(this.$store.getters.emailInfo).delete();
      this.$store.commit("deleteCart")
      alert("Order berhasil")

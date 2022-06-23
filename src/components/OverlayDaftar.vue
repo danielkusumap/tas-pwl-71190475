@@ -98,25 +98,6 @@ export default {
           this.show = true;
 
         });
-        //       db.collection("cart")
-        // .doc(this.email)
-        // .get()
-        // .then((snapshot) => {
-        //   const documents = snapshot.data();
-        //   if (typeof documents == "undefined") {
-        //     db.collection("cart").doc(this.email).set({ isi_cart: {} });
-        //   }
-        //   db.collection("cart")
-        //     .doc(this.email)
-        //     .get()
-        //     .then((snapshot) => {
-        //       const documents = snapshot.data();
-        //       this.$store.commit("setCart", documents);
-        //       this.show = true;
-        //       this.close_daftar();
-        //       // this.$store.state.cart.isi_cart["test"]+=1
-        //     });
-        // });
         db.collection("cart").doc(this.email).set({ isi_cart: {} });
           db.collection("cart")
             .doc(this.email)
@@ -125,7 +106,6 @@ export default {
               const documents = snapshot.data();
               this.$store.commit("setCart", documents);
               this.close_daftar();
-              // this.$store.state.cart.isi_cart["test"]+=1
             });
 
       

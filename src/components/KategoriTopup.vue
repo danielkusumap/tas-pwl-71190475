@@ -53,11 +53,6 @@
                       "
                       >{{ item.nama }}</v-card-title
                     >
-                    <!-- <v-card-actions>
-                        <v-btn class="ma-2 mx-auto" outlined color="indigo">
-                          Lihat
-                        </v-btn>
-                      </v-card-actions> -->
                   </v-card>
                 </v-col>
               </v-row>
@@ -82,7 +77,6 @@ export default {
   methods: {
     pilihKategori(kategori) {
       document.getElementById("text-field-search").value = kategori;
-      // console.log(document.getElementById("text-field-search").value)
       this.$store.commit("setSearchProd", kategori);
       if (this.$router.currentRoute.path != "/search") {
         this.$router.push("/search");

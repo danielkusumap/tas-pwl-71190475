@@ -39,7 +39,6 @@ export default new Vuex.Store({
           state.totalHarga += cartSlice[i][1].jumlah * cartSlice[i][1].harga_produk
         }
         state.totalJumlah = jumlah
-        // state.totalJumlah = Object.entries(state.cart.isi_cart).length
       }
       catch (err) {
         state.totalJumlah = 0
@@ -59,18 +58,8 @@ export default new Vuex.Store({
       if (item.id in state.cart.isi_cart) {
         state.cart.isi_cart[item.id]["jumlah"] -= 1
         state.totalHarga -= state.cart.isi_cart[item.id]["harga_produk"]
-        if(state.cart.isi_cart[item.id]["jumlah"] == 0){
-          // const cartSlice = Object.entries(state.cart.isi_cart)
-          // var tempCart = {"isi_cart":{}}
-          // for (var i = 0; i < cartSlice.length; i++){
-          //   if(item.id != cartSlice[i][1].id){
-          //     tempCart["isi_cart"][cartSlice[i][1].id] = cartSlice[i][1]
-          //   }
-          // }
-          // console.log(tempCart)
+        if(state.cart.isi_cart[item.id]["jumlah"] == 0){  
           delete state.cart.isi_cart[item.id]
-          // console.log(state.cart)
-          // state.cart = state.cart.isi_cart.filter((produk) => produk.id !== item.id)
           
         }
         

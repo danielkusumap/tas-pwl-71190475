@@ -1,12 +1,6 @@
 <template>
     <v-app>
       <div style="position: sticky; top: 0; z-index: 1">
-        <v-progress-linear
-          v-show="show_bar"
-          :value="this.$store.state.progress_value"
-          height="3"
-          striped
-        ></v-progress-linear>
         <v-app-bar color="deep-purple accent-4" dense dark height="60">
           <v-toolbar-title @click="backHome">TokoSaya</v-toolbar-title>
 
@@ -129,11 +123,6 @@
                 </v-card-actions>
               </v-card>
             </v-menu>
-            <!-- <v-btn icon color="white" class="mx-5" @click="test">
-            <v-badge :content="cekCart()">
-              <v-icon> mdi-cart-outline </v-icon>
-            </v-badge>
-          </v-btn> -->
 
             <v-menu offset-y open-on-hover>
               <template v-slot:activator="{ on, attrs }">
@@ -153,12 +142,8 @@
                   }}</v-list-item-title>
                 </v-list-item>
                 <v-btn x-large block @click="logoutAccount"> logout </v-btn>
-                <!-- <v-list-item link @click="logoutAccount">
-                <v-list-item-title>Logout</v-list-item-title>
-              </v-list-item> -->
               </v-list>
             </v-menu>
-            <!-- <v-btn>{{ $store.getters.emailInfo }}</v-btn> -->
           </div>
         </v-app-bar>
       </div>
@@ -168,8 +153,6 @@
           :overlay_value="overlay_daftar"
           @close="close_overlay"
         />
-        <!-- <slide-item />
-      <kategori-topup /> -->
         <router-view></router-view>
       </v-main>
     </v-app>
@@ -179,16 +162,12 @@
 import firebase from "firebase";
 import { db } from "./db";
 import OverlayMasuk from "./components/OverlayMasuk.vue";
-// import SlideItem from "./components/SlideItem.vue";
-// import KategoriTopup from "./components/KategoriTopup.vue";
 import OverlayDaftar from "./components/OverlayDaftar.vue";
 
 export default {
   name: "App",
   components: {
     OverlayMasuk,
-    // SlideItem,
-    // KategoriTopup,
     OverlayDaftar,
   },
 
@@ -207,9 +186,6 @@ export default {
 
   methods: {
     search() {
-      // if (this.search_input === "") {
-      //   this.show = !this.show;
-      // }
       this.show = true;
       this.screen_width = screen.availWidth;
       if (this.screen_width <= 480) {
@@ -231,18 +207,13 @@ export default {
       this.show_icon = true;
     },
     searchProd() {
-      this.show_bar = true;
-      // this.$store.commit("setProgressValue", 15);
       this.$store.commit("setSearchProd", this.search_input);
-      // this.$store.commit("setProgressValue", 50);
 
       if (this.$router.currentRoute.path != "/search") {
         this.$router.push("/search");
       }
-      // this.$router.push("/search");
 
       this.show_bar = false;
-      // this.$store.commit("setProgressValue", 0);
     },
     backHome() {
       this.show_bar = true;
@@ -250,7 +221,6 @@ export default {
       this.show_bar = false;
     },
     logoutAccount() {
-      // console.log("AAAAAAA")
       var isLogin = false;
       var email = "";
       var password = "";
@@ -275,8 +245,6 @@ export default {
     cekCart() {
       try {
         return this.$store.state.totalJumlah;
-        // return Object.keys(this.$store.getters.getCart.isi_cart).length;
-        // return Object.size(this.$store.getters.getCart.isi_cart)
       } catch (err) {
         return 0;
       }
@@ -295,10 +263,7 @@ export default {
     cekCartItem() {
       this.items = Object.entries(this.$store.getters.getCart.isi_cart);
     },
-    // test() {
-    //   console.log(this.$store.state.totalJumlah);
-    //   // console.log("AAAAAAAAA");
-    // },
+
   },
   created() {
     if (localStorage.getItem("email") && localStorage.getItem("password")) {
@@ -324,9 +289,6 @@ export default {
         .get()
         .then((snapshot) => {
           const documents = snapshot.data();
-          // this.cart = documents;
-          // this.$store.commit("setCart", documents);
-          // console.log(documents, "AAAA");
           if (typeof documents == "undefined") {
             db.collection("cart").doc(email).set({ isi_cart: {} });
           }
@@ -336,7 +298,6 @@ export default {
             .then((snapshot) => {
               const documents = snapshot.data();
               this.$store.commit("setCart", documents);
-              // this.$store.state.cart.isi_cart["test"]+=1
             });
         });
     }
