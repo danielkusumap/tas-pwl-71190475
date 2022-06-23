@@ -14,6 +14,7 @@
 
         <Transition name="slide-fade">
           <v-text-field
+            id="text-field-search"
             class="jarak pt-6"
             v-show="show"
             v-model="search_input"
@@ -29,8 +30,16 @@
         </v-btn>
 
         <div v-show="!$store.getters.cekLoginInfo">
-          <v-btn class="jarak text-caption text-sm-body-2 text-md-body-1 text-lg-h6" @click="masuk">Masuk</v-btn>
-          <v-btn class="jarak text-caption text-sm-body-2 text-md-body-1 text-lg-h6" @click="daftar">Daftar</v-btn>
+          <v-btn
+            class="jarak text-caption text-sm-body-2 text-md-body-1 text-lg-h6"
+            @click="masuk"
+            >Masuk</v-btn
+          >
+          <v-btn
+            class="jarak text-caption text-sm-body-2 text-md-body-1 text-lg-h6"
+            @click="daftar"
+            >Daftar</v-btn
+          >
         </div>
         <div v-show="$store.getters.cekLoginInfo">
           <v-menu offset-y :close-on-content-click="closeOnContentClick">
@@ -40,10 +49,14 @@
                 v-on="on"
                 icon
                 color="white"
-                class="mx-5 text-caption text-sm-body-2 text-md-body-1 text-lg-h6"
+                class="
+                  mx-5
+                  text-caption text-sm-body-2 text-md-body-1 text-lg-h6
+                "
                 @click="cekCartItem"
+                v-show="show_icon"
               >
-                <v-badge :content="cekCart()" >
+                <v-badge :content="cekCart()">
                   <v-icon> mdi-cart-outline </v-icon>
                 </v-badge>
               </v-btn>
@@ -57,9 +70,8 @@
                 width="800"
               >
                 <template v-slot:default="{ item }">
+                  
                   <v-list-item :key="item.id">
-                    <!-- <v-img height="400" width="50" :src="item[1].foto_produk">
-                    </v-img> -->
                     <v-list-item-avatar
                       class="mb-5"
                       width="200"
@@ -85,7 +97,6 @@
                         <v-btn icon @click="decreaseItem(item[1])">
                           <v-icon>mdi-minus</v-icon>
                         </v-btn>
-                        <!-- <v-text class="mt-2">{{ item[1].jumlah }}</v-text> -->
                         <p class="mt-2">{{ item[1].jumlah }}</p>
                         <v-btn icon @click="newItem(item[1])">
                           <v-icon>mdi-plus</v-icon>
@@ -98,12 +109,12 @@
               </v-virtual-scroll>
 
               <v-card-title>
-                Total harga: Rp{{($store.getters.getTotalHarga).toLocaleString("id-ID")}}
+                Total harga: Rp{{
+                  $store.getters.getTotalHarga.toLocaleString("id-ID")
+                }}
               </v-card-title>
               <v-card-actions>
-                <v-btn @click="$router.push('/checkout')" >
-                  checkout
-                </v-btn>
+                <v-btn @click="$router.push('/checkout')"> checkout </v-btn>
               </v-card-actions>
             </v-card>
           </v-menu>
@@ -115,17 +126,22 @@
 
           <v-menu offset-y open-on-hover>
             <template v-slot:activator="{ on, attrs }">
-              <v-btn v-bind="attrs" v-on="on" class="text-caption text-sm-body-2 text-md-body-1 text-lg-h10">
+              <v-btn
+                v-bind="attrs"
+                v-on="on"
+                class="text-caption text-sm-body-2 text-md-body-1 text-lg-h10"
+                v-show="show_icon"
+              >
                 <v-icon>mdi-account</v-icon>
               </v-btn>
             </template>
-            <v-list >
+            <v-list class="px-4">
               <v-list-item>
-                <v-list-item-tit>{{ $store.getters.emailInfo }}</v-list-item-tit>
+                <v-list-item-title>{{
+                  $store.getters.emailInfo
+                }}</v-list-item-title>
               </v-list-item>
-              <v-btn x-large>
-                logout
-              </v-btn>
+              <v-btn x-large block> logout </v-btn>
               <!-- <v-list-item link @click="logoutAccount">
                 <v-list-item-title>Logout</v-list-item-title>
               </v-list-item> -->
@@ -170,7 +186,9 @@ export default {
     overlay_daftar: false,
     show_bar: false,
     closeOnContentClick: false,
-    items:"",
+    items: "",
+    screen_width: "",
+    show_icon: true,
   }),
 
   methods: {
@@ -179,6 +197,10 @@ export default {
       //   this.show = !this.show;
       // }
       this.show = true;
+      this.screen_width = screen.availWidth;
+      if (this.screen_width <= 480) {
+        this.show_icon = false;
+      }
     },
     masuk() {
       this.overlay_masuk = !this.overlay_masuk;
@@ -192,6 +214,7 @@ export default {
     },
     closeSearch() {
       this.show = false;
+      this.show_icon = true;
     },
     searchProd() {
       this.show_bar = true;
@@ -252,12 +275,12 @@ export default {
     decreaseItem(item) {
       this.$store.commit("decreaseItem", item);
       var email = this.$store.getters.emailInfo;
-      this.cekCartItem()
+      this.cekCartItem();
       db.collection("cart").doc(email).set(this.$store.getters.getCart);
     },
-    cekCartItem(){
-      this.items =  Object.entries(this.$store.getters.getCart.isi_cart)
-    }
+    cekCartItem() {
+      this.items = Object.entries(this.$store.getters.getCart.isi_cart);
+    },
     // test() {
     //   console.log(this.$store.state.totalJumlah);
     //   // console.log("AAAAAAAAA");
