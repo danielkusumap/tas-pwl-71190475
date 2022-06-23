@@ -94,14 +94,12 @@ export default {
     db.collection("produk")
       .get()
       .then((querySnapshot) => {
-        this.$store.commit("setProgressValue", 60);
         const documents = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
         // this.list_prod = documents;
         this.$store.commit("setListProd", documents);
-        this.$store.commit("setProgressValue", 75);
       });
   },
   computed: {

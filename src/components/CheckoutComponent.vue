@@ -143,6 +143,7 @@
 </style>
 
 <script>
+import firebase from 'firebase';
 import { db } from "../db";
 export default {
   name: "CheckoutComponent",
@@ -157,15 +158,39 @@ export default {
     };
   },
   methods: {
-    orderNow(){
+    async orderNow(){
+            if(this.nama_penerima === ""){
+        alert("harap isi nama penerima dulu")
+        return
+      }
       if(this.alamat === ""){
         alert("harap isi alamat dulu")
         return
       }
-      if(this.nama_penerima === ""){
-        alert("harap isi nama penerima dulu")
-        return
-      }
+
+      db.collection("data_transaksi")
+      .add({
+        email: this.$store.getters.emailInfo,
+        isi_cart: this.$store.getters.getCart.isi_cart,
+        nama_penerima: this.nama_penerima,
+        alamat: this.alamat,
+        tanggal_transaksi: firebase.firestore.Timestamp.now()
+      })
+      // db.collection("data_transaksi")
+      // .get()
+      // .then((querySnapshot) => {
+      //   const documents = querySnapshot.docs.map((doc) => ({
+      //     id: doc.id,
+      //     ...doc.data(),
+      //   }));
+      //   this.$store.commit("setListTransaksi", documents)
+      // });
+     db.collection('cart').doc(this.$store.getters.emailInfo).delete();
+     this.$store.commit("deleteCart")
+     alert("Order berhasil")
+     location.reload()
+     this.cekCartItem();
+     
     },
     cekVoucher() {
       const list_voucher = this.$store.getters.getListVoucher;

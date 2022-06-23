@@ -120,6 +120,8 @@ export default {
             .then((snapshot) => {
               const documents = snapshot.data();
               this.$store.commit("setCart", documents);
+              // this.show = true;
+              this.close_masuk();
               // this.$store.state.cart.isi_cart["test"]+=1
             });
         });

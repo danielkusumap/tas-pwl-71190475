@@ -16,7 +16,8 @@ export default new Vuex.Store({
     cart: [],
     totalJumlah: 0,
     totalHarga:0,
-    list_voucher:[]
+    list_voucher:[],
+    list_transaksi:[]
   },
   mutations: {
     login(state, { isLogin, email, password, stay_singed }) {
@@ -24,6 +25,9 @@ export default new Vuex.Store({
       state.email = email
       state.password = password
       state.stay_singed = stay_singed
+    },
+    setListTransaksi(state, list_transaksi){
+      state.list_transaksi = list_transaksi
     },
     setCart(state, cart) {
       state.cart = cart
@@ -71,8 +75,15 @@ export default new Vuex.Store({
         }
         
         state.totalJumlah -= 1
+      }      
+    },
+    deleteCart(state){
+      const cartSlice = Object.entries(state.cart.isi_cart)
+      for (var i = 0; i < cartSlice.length; i++) {
+        delete state.cart.isi_cart[cartSlice[i][1].id]
       }
-      
+      state.cart = []
+      state.totalJumlah = 0
     },
     setSearchProd(state, search_prod) {
       state.search_prod = search_prod
@@ -113,6 +124,9 @@ export default new Vuex.Store({
     },
     getListVoucher(state){
       return state.list_voucher
+    },
+    getListTransaksi(state){
+      return state.list_transaksi
     }
   }
 })

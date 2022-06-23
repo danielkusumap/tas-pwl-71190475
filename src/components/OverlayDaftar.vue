@@ -74,7 +74,7 @@ export default {
     close_daftar() {
       this.$emit("close", !this.overlay_value);
     },
-    createAccount() {
+    async createAccount() {
       this.show = false;
       firebase
         .auth()
@@ -95,7 +95,29 @@ export default {
           this.username = "";
           this.email = "";
           this.password = "";
-          db.collection("cart").doc(this.email).set({ isi_cart: {} });
+          this.show = true;
+
+        });
+        //       db.collection("cart")
+        // .doc(this.email)
+        // .get()
+        // .then((snapshot) => {
+        //   const documents = snapshot.data();
+        //   if (typeof documents == "undefined") {
+        //     db.collection("cart").doc(this.email).set({ isi_cart: {} });
+        //   }
+        //   db.collection("cart")
+        //     .doc(this.email)
+        //     .get()
+        //     .then((snapshot) => {
+        //       const documents = snapshot.data();
+        //       this.$store.commit("setCart", documents);
+        //       this.show = true;
+        //       this.close_daftar();
+        //       // this.$store.state.cart.isi_cart["test"]+=1
+        //     });
+        // });
+        db.collection("cart").doc(this.email).set({ isi_cart: {} });
           db.collection("cart")
             .doc(this.email)
             .get()
@@ -105,9 +127,8 @@ export default {
               this.close_daftar();
               // this.$store.state.cart.isi_cart["test"]+=1
             });
-        });
 
-      this.show = true;
+      
     },
   },
 };

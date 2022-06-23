@@ -1,164 +1,178 @@
 <template>
-  <v-app>
-    <div style="position: sticky; top: 0; z-index: 1">
-      <v-progress-linear
-        v-show="show_bar"
-        :value="this.$store.state.progress_value"
-        height="3"
-        striped
-      ></v-progress-linear>
-      <v-app-bar color="deep-purple accent-4" dense dark height="60">
-        <v-toolbar-title @click="backHome">TokoSaya</v-toolbar-title>
+    <v-app>
+      <div style="position: sticky; top: 0; z-index: 1">
+        <v-progress-linear
+          v-show="show_bar"
+          :value="this.$store.state.progress_value"
+          height="3"
+          striped
+        ></v-progress-linear>
+        <v-app-bar color="deep-purple accent-4" dense dark height="60">
+          <v-toolbar-title @click="backHome">TokoSaya</v-toolbar-title>
 
-        <v-spacer></v-spacer>
+          <v-spacer></v-spacer>
 
-        <Transition name="slide-fade">
-          <v-text-field
-            id="text-field-search"
-            class="jarak pt-6"
-            v-show="show"
-            v-model="search_input"
-            label="search"
-            v-on:keyup.enter="searchProd"
-          ></v-text-field>
-        </Transition>
-        <v-btn icon @click="closeSearch" v-show="show">
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-        <v-btn icon @click="search" v-show="!show">
-          <v-icon>mdi-magnify</v-icon>
-        </v-btn>
+          <Transition name="slide-fade">
+            <v-text-field
+              id="text-field-search"
+              class="jarak pt-6"
+              v-show="show"
+              v-model="search_input"
+              label="search"
+              v-on:keyup.enter="searchProd"
+            ></v-text-field>
+          </Transition>
+          <v-btn icon @click="closeSearch" v-show="show">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-btn icon @click="search" v-show="!show">
+            <v-icon>mdi-magnify</v-icon>
+          </v-btn>
 
-        <div v-show="!$store.getters.cekLoginInfo">
-          <v-btn
-            class="jarak text-caption text-sm-body-2 text-md-body-1 text-lg-h6"
-            @click="masuk"
-            >Masuk</v-btn
-          >
-          <v-btn
-            class="jarak text-caption text-sm-body-2 text-md-body-1 text-lg-h6"
-            @click="daftar"
-            >Daftar</v-btn
-          >
-        </div>
-        <div v-show="$store.getters.cekLoginInfo">
-          <v-menu offset-y :close-on-content-click="closeOnContentClick">
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                v-bind="attrs"
-                v-on="on"
-                icon
-                color="white"
-                class="
-                  mx-5
-                  text-caption text-sm-body-2 text-md-body-1 text-lg-h6
-                "
-                @click="cekCartItem"
-                v-show="show_icon"
-              >
-                <v-badge :content="cekCart()">
-                  <v-icon> mdi-cart-outline </v-icon>
-                </v-badge>
-              </v-btn>
-            </template>
+          <div v-show="!$store.getters.cekLoginInfo">
+            <v-btn
+              class="
+                jarak
+                text-caption text-sm-body-2 text-md-body-1 text-lg-h6
+              "
+              @click="masuk"
+              >Masuk</v-btn
+            >
+            <v-btn
+              class="
+                jarak
+                text-caption text-sm-body-2 text-md-body-1 text-lg-h6
+              "
+              @click="daftar"
+              >Daftar</v-btn
+            >
+          </div>
+          <div v-show="$store.getters.cekLoginInfo">
+            <v-menu offset-y :close-on-content-click="closeOnContentClick">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  v-bind="attrs"
+                  v-on="on"
+                  icon
+                  color="white"
+                  class="
+                    mx-5
+                    text-caption text-sm-body-2 text-md-body-1 text-lg-h6
+                  "
+                  @click="cekCartItem"
+                  v-show="show_icon"
+                >
+                  <v-badge :content="cekCart()">
+                    <v-icon> mdi-cart-outline </v-icon>
+                  </v-badge>
+                </v-btn>
+              </template>
 
-            <v-card elevation="16" max-width="1200" class="mx-auto">
-              <v-virtual-scroll
-                :items="items"
-                item-height="200"
-                height="400"
-                width="800"
-              >
-                <template v-slot:default="{ item }">
-                  
-                  <v-list-item :key="item.id">
-                    <v-list-item-avatar
-                      class="mb-5"
-                      width="200"
-                      height="150"
-                      tile
-                    >
-                      <v-img :src="item[1].foto_produk"></v-img>
-                    </v-list-item-avatar>
-                    <v-list-item-content>
-                      <v-list-item-title>
-                        {{ item[1].nama_produk }}
-                      </v-list-item-title>
-                      <v-list-item-title>
-                        {{ item[1].jumlah }} x Rp{{ (item[1].harga_produk).toLocaleString("id-ID") }}
-                      </v-list-item-title>
-                      <v-list-item-title>
-                        subtotal: Rp{{ (item[1].jumlah * item[1].harga_produk).toLocaleString("id-ID") }}
-                      </v-list-item-title>
-                    </v-list-item-content>
+              <v-card elevation="16" max-width="1200" class="mx-auto">
+                <v-virtual-scroll
+                  :items="items"
+                  item-height="200"
+                  height="400"
+                  width="800"
+                >
+                  <template v-slot:default="{ item }">
+                    <v-list-item :key="item.id">
+                      <v-list-item-avatar
+                        class="mb-5"
+                        width="200"
+                        height="150"
+                        tile
+                      >
+                        <v-img :src="item[1].foto_produk"></v-img>
+                      </v-list-item-avatar>
+                      <v-list-item-content>
+                        <v-list-item-title>
+                          {{ item[1].nama_produk }}
+                        </v-list-item-title>
+                        <v-list-item-title>
+                          {{ item[1].jumlah }} x Rp{{
+                            item[1].harga_produk.toLocaleString("id-ID")
+                          }}
+                        </v-list-item-title>
+                        <v-list-item-title>
+                          subtotal: Rp{{
+                            (
+                              item[1].jumlah * item[1].harga_produk
+                            ).toLocaleString("id-ID")
+                          }}
+                        </v-list-item-title>
+                      </v-list-item-content>
 
-                    <v-list-item-content>
-                      <v-list-item-icon>
-                        <v-btn icon @click="decreaseItem(item[1])">
-                          <v-icon>mdi-minus</v-icon>
-                        </v-btn>
-                        <p class="mt-2">{{ item[1].jumlah }}</p>
-                        <v-btn icon @click="newItem(item[1])">
-                          <v-icon>mdi-plus</v-icon>
-                        </v-btn>
-                      </v-list-item-icon>
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-divider></v-divider>
-                </template>
-              </v-virtual-scroll>
+                      <v-list-item-content>
+                        <v-list-item-icon>
+                          <v-btn icon @click="decreaseItem(item[1])">
+                            <v-icon>mdi-minus</v-icon>
+                          </v-btn>
+                          <p class="mt-2">{{ item[1].jumlah }}</p>
+                          <v-btn icon @click="newItem(item[1])">
+                            <v-icon>mdi-plus</v-icon>
+                          </v-btn>
+                        </v-list-item-icon>
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-divider></v-divider>
+                  </template>
+                </v-virtual-scroll>
 
-              <v-card-title>
-                Total harga: Rp{{
-                  $store.getters.getTotalHarga.toLocaleString("id-ID")
-                }}
-              </v-card-title>
-              <v-card-actions>
-                <v-btn @click="$router.push('/checkout')"> checkout </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-menu>
-          <!-- <v-btn icon color="white" class="mx-5" @click="test">
+                <v-card-title>
+                  Total harga: Rp{{
+                    $store.getters.getTotalHarga.toLocaleString("id-ID")
+                  }}
+                </v-card-title>
+                <v-card-actions>
+                  <v-btn @click="$router.push('/checkout')"> checkout </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-menu>
+            <!-- <v-btn icon color="white" class="mx-5" @click="test">
             <v-badge :content="cekCart()">
               <v-icon> mdi-cart-outline </v-icon>
             </v-badge>
           </v-btn> -->
 
-          <v-menu offset-y open-on-hover>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                v-bind="attrs"
-                v-on="on"
-                class="text-caption text-sm-body-2 text-md-body-1 text-lg-h10"
-                v-show="show_icon"
-              >
-                <v-icon>mdi-account</v-icon>
-              </v-btn>
-            </template>
-            <v-list class="px-4">
-              <v-list-item>
-                <v-list-item-title>{{
-                  $store.getters.emailInfo
-                }}</v-list-item-title>
-              </v-list-item>
-              <v-btn x-large block> logout </v-btn>
-              <!-- <v-list-item link @click="logoutAccount">
+            <v-menu offset-y open-on-hover>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  v-bind="attrs"
+                  v-on="on"
+                  class="text-caption text-sm-body-2 text-md-body-1 text-lg-h10"
+                  v-show="show_icon"
+                >
+                  <v-icon>mdi-account</v-icon>
+                </v-btn>
+              </template>
+              <v-list class="px-4">
+                <v-list-item>
+                  <v-list-item-title>{{
+                    $store.getters.emailInfo
+                  }}</v-list-item-title>
+                </v-list-item>
+                <v-btn x-large block @click="logoutAccount"> logout </v-btn>
+                <!-- <v-list-item link @click="logoutAccount">
                 <v-list-item-title>Logout</v-list-item-title>
               </v-list-item> -->
-            </v-list>
-          </v-menu>
-          <!-- <v-btn>{{ $store.getters.emailInfo }}</v-btn> -->
-        </div>
-      </v-app-bar>
-    </div>
-    <v-main>
-      <overlay-masuk :overlay_value="overlay_masuk" @close="close_overlay" />
-      <overlay-daftar :overlay_value="overlay_daftar" @close="close_overlay" />
-      <!-- <slide-item />
+              </v-list>
+            </v-menu>
+            <!-- <v-btn>{{ $store.getters.emailInfo }}</v-btn> -->
+          </div>
+        </v-app-bar>
+      </div>
+      <v-main>
+        <overlay-masuk :overlay_value="overlay_masuk" @close="close_overlay" />
+        <overlay-daftar
+          :overlay_value="overlay_daftar"
+          @close="close_overlay"
+        />
+        <!-- <slide-item />
       <kategori-topup /> -->
-      <router-view></router-view>
-    </v-main>
-  </v-app>
+        <router-view></router-view>
+      </v-main>
+    </v-app>
 </template>
 
 <script>
@@ -232,11 +246,8 @@ export default {
     },
     backHome() {
       this.show_bar = true;
-      this.$store.commit("setProgressValue", 35);
       this.$router.push("/");
-      this.$store.commit("setProgressValue", 75);
       this.show_bar = false;
-      this.$store.commit("setProgressValue", 0);
     },
     logoutAccount() {
       // console.log("AAAAAAA")
@@ -257,6 +268,9 @@ export default {
             stay_signed,
           });
         });
+      if (this.$router.currentRoute.path != "/") {
+        this.$router.push("/");
+      }
     },
     cekCart() {
       try {
